@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Jarvis</string>
+    <string name="descripcionBoton">Boton de captura de voz</string>
+</resources>
