@@ -1,52 +1,36 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              android:layout_height="match_parent"
-                                             android:layout_width="match_parent">
-    <TextView
-            android:id="@+id/prompt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:textColor="#000"
-            android:textSize="26sp"
-            android:textStyle="normal" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+                                             android:layout_width="match_parent" android:background="@drawable/back">
 
     <ImageView
             android:id="@+id/btnEscuchar"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:onClick="getVoiceInput"
-            android:src="@drawable/mic"
-            android:layout_marginLeft="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:onClick="listen"
+            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/boton_para_iniciar_la_captura_de_voz"
+            app:layout_constraintHorizontal_bias="0.498" app:srcCompat="@drawable/mic"/>
     <ImageView
-            android:id="@+id/btnEventos"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/prompt" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnEscuchar" android:visibility="visible"
-            android:onClick="setVoiceOutput" app:srcCompat="@drawable/weather"/>
-    <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
             android:id="@+id/btnClima"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/btnEscuchar"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/prompt"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:visibility="visible"
-            android:onClick="setVoiceOutput" app:srcCompat="@drawable/cal"/>
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:visibility="visible"
+            android:onClick="talk" app:srcCompat="@drawable/weather"
+            android:contentDescription="@string/reporte_completo_del_clima" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"/>
     <ImageView
             android:layout_width="100dp"
-            android:layout_height="100dp" app:srcCompat="@drawable/spk" android:id="@+id/btnHablar"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/prompt"
-            app:layout_constraintEnd_toStartOf="@+id/btnClima" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toEndOf="@+id/btnEventos" android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/btnEscuchar"
-            android:onClick="setVoiceOutput"/>
+            android:layout_height="100dp"
+            android:id="@+id/btnEventos"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:visibility="visible"
+            android:onClick="talk" app:srcCompat="@drawable/cal"
+            android:contentDescription="@string/vista_de_todos_los_eventos_ordenados_por_fecha"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"/>
 </android.support.constraint.ConstraintLayout>

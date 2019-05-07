@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Jarvis</string>
+    <string name="app_name">J.A.R.V.I.S.</string>
     <string name="descripcionBoton">Boton de captura de voz</string>
+    <string name="reporte_completo_del_clima">Reporte completo del clima</string>
+    <string name="boton_para_iniciar_la_captura_de_voz">Boton para iniciar la captura de voz</string>
+    <string name="vista_de_todos_los_eventos_ordenados_por_fecha">Vista de todos los eventos, ordenados por fecha
+    </string>
 </resources>

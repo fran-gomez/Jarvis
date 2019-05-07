@@ -2,12 +2,18 @@ package com.example.jarvis.tokens;
 
 import java.util.List;
 
-public abstract class Comando extends Token {
+public abstract class Comando  {
+
+    protected String identificador;
 
     public Comando(String id) {
-        super(id);
+        identificador = id;
     }
 
-    public abstract void ejecutar(List<Token> argumentos);
-    public abstract List<Token> analizarArgumentos(String[] args);
+    public abstract String ejecutar();
+    public abstract List<Argumento> analizarArgumentos(String[] args);
+
+    public String toString() {
+        return identificador;
+    }
 }
