@@ -1,9 +1,12 @@
 package com.example.jarvis.tokens;
 
+import android.content.Context;
 import com.example.jarvis.weather.Forecast;
 import com.example.jarvis.weather.ReporteCiudad;
 
-public class ComandoReportar extends Comando {
+public class ComandoReportar implements Comando {
+
+    protected String identificador;
 
     protected Forecast reporte;
     protected String ciudad;
@@ -11,15 +14,16 @@ public class ComandoReportar extends Comando {
     private long ultimaSolicitud;
 
     public ComandoReportar(String id) {
-        super(id);
+        identificador = id;
+
         ciudad = "Bahia Blanca";
         reporte = new ReporteCiudad(ciudad);
         ultimaSolicitud = 0;
 
-        ejecutar();
+        ejecutar(null);
     }
 
-    public String ejecutar() {
+    public String ejecutar(Context contexto) {
 
         long nuevaSolicitud = System.currentTimeMillis();
         // Pido el reporte al servidor una vez cada 60 minutos como maximo

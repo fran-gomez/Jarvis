@@ -1,13 +1,17 @@
 package com.example.jarvis.tokens;
 
-public class ComandoReproducir extends Comando {
+import android.content.Context;
+
+public class ComandoReproducir implements Comando {
+
+    protected String identificador;
 
     public ComandoReproducir(String id) {
-        super(id);
+        identificador = id;
     }
 
     @Override
-    public String ejecutar() {
+    public String ejecutar(Context contexto) {
         return identificador;
     }
 

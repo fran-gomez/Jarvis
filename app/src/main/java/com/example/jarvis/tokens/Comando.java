@@ -1,13 +1,20 @@
 package com.example.jarvis.tokens;
 
-public abstract class Comando  {
+import android.content.Context;
 
-    protected String identificador;
+public interface Comando  {
 
-    public Comando(String id) {
-        identificador = id;
-    }
+    /**
+     * Ejecuta la accion correspondiente al comando
+     * @param contexto Contexto desde donde es llamado el comando
+     * @return Cadena con el estado final del comando
+     */
+    String ejecutar(Context contexto);
 
-    public abstract String ejecutar();
-    public abstract void analizarArgumentos(String[] args);
+    /**
+     * Analiza la entrada provista por el usuario en busca de los
+     * argumentos necesarios para ejecutar el comando
+     * @param args Conjunto de palabras que contiene los argumentos del comando
+     */
+    void analizarArgumentos(String[] args);
 }

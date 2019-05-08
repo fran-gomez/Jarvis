@@ -1,13 +1,17 @@
 package com.example.jarvis.tokens;
 
-public class ComandoAlarma extends Comando {
+import android.content.Context;
+
+public class ComandoAlarma implements Comando {
+
+    protected String identificador;
 
     public ComandoAlarma(String id) {
-        super(id);
+        identificador = id;
     }
 
     @Override
-    public String ejecutar() {
+    public String ejecutar(Context contexto) {
         return identificador;
     }
 

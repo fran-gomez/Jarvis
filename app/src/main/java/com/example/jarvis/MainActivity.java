@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
-import com.example.jarvis.events.EventosConPrioridad;
-import com.example.jarvis.events.Handler;
+import com.example.jarvis.events.RecordatoriosOrdenados;
+import com.example.jarvis.events.Reminder;
 import com.example.jarvis.lexer.AnalizadorFuerzaBruta;
 import com.example.jarvis.lexer.Tokenizer;
 import com.example.jarvis.tokens.Comando;
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextToSpeech voice;
 
-    private Handler misEventos;
+    private Reminder misEventos;
     private Tokenizer miAnalizador;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +37,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Inicializar los objetos correspondientes a Jarvis
-        misEventos = new EventosConPrioridad();
+        misEventos = RecordatoriosOrdenados.getInstancia();
         miAnalizador = new AnalizadorFuerzaBruta();
 
         // Saludar al usuario
     }
 
-    public void talk(View view) {
-        talk("Funcion aun no implementada");
+    public void mostrarEventos(View view) {
+
+        Intent visorDeEventos = new Intent(this, VisorDeEventos.class);
+        startActivity(visorDeEventos);
     }
 
     public void talk(String words) {
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         if (words.length() == 0) {
             voice.speak("Lo siento, no tengo nada para decir", TextToSpeech.QUEUE_FLUSH, null, null);
         } else
-            voice.speak(words, TextToSpeech.QUEUE_FLUSH, null, null);
+            voice.speak(words, TextToSpeech.QUEUE_ADD, null, null);
     }
 
     public void listen(View view) {
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 comando = miAnalizador.analize(res.get(0));
 
 
-                if ((str = comando.ejecutar()) == null)
+                if ((str = comando.ejecutar(this)) == null)
                     talk("Comando aun no implementado");
                 else
                     talk(str);
@@ -100,4 +102,5 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
+
 }

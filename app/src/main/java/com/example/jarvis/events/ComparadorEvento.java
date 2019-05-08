@@ -1,15 +1,14 @@
 package com.example.jarvis.events;
 
 import java.util.Comparator;
+import java.util.Date;
 
-public class ComparadorEvento<Event> implements Comparator<Event> {
-    @Override
-    public int compare(Event o1, Event o2) {
-        return 0;
-    }
+public class ComparadorEvento<E> implements Comparator<E> {
 
-    @Override
-    public boolean equals(Object obj) {
-        return false;
+    public int compare(E o1, E o2) {
+        Date fechaO1 = ((Evento) o1).getFecha();
+        Date fechaO2 = ((Evento) o2).getFecha();
+
+        return fechaO1.compareTo(fechaO2);
     }
 }

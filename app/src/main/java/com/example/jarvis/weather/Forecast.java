@@ -22,13 +22,29 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
         reporte = "";
     }
 
+    /**
+     * Consulta la direccion url correspondiente a la ciudad
+     * @return Direccion url
+     */
     public String getUrl() {
         return url;
     }
+
+    /**
+     * Consulta el reporte mas reciente del clima
+     * @return Reporte del clima
+     */
     public String getReporte() {
         return reporte;
     }
 
+    /**
+     * Solicita a la API de openweather.com la informacion sobre el clima en una determinada ciudad
+     * en segundo plano. Android fuerza a que todas las solicitudes web se realicen de esta forma para
+     * evitar un impacto en el desempeño de la actividad principal
+     * @param url Direccion correspondiente a la ciudad
+     * @return JSON que contiene todos los datos referentes al clima actual en la ciudad
+     */
     protected String doInBackground(String... url) {
         assert (url.length == 1);
 
@@ -44,14 +60,16 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
 
             return reporte;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return "Direccion U R L mal formada. Por favor, contacte al administrador";
         } catch (IOException e) {
-            e.printStackTrace();
+            return "Error de lectura escritura, por favor, intente nuevamente.";
         }
-
-        return "Error";
     }
 
+    /**
+     * Procesamiento de los resultados obtenidos por el metodo doInBackground
+     * @param aString JSON que contiene los datos referentes al clima actual en la ciudad
+     */
     protected void onPostExecute(String aString) {
         super.onPostExecute(aString);
 
@@ -61,6 +79,11 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
             reporte = "Error obteniendo el reporte";
     }
 
+    /**
+     * Analiza el objeto JSON para armar el reporte del clima
+     * @param jsonObject JSON que contiene los datos referentes al clima actual en la ciudad
+     * @return Reporte completo del clima actual en la ciudad
+     */
     private String armarReporte(String jsonObject) {
         try {
             String reporte;
@@ -79,9 +102,7 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
 
             return reporte;
         } catch (JSONException e) {
-            e.printStackTrace();
+            return "Campo argumento no encontrado, intente nuevamente mas tarde";
         }
-
-        return "Error";
     }
 }

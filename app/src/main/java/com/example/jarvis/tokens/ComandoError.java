@@ -1,12 +1,17 @@
 package com.example.jarvis.tokens;
 
-public class ComandoError extends Comando {
+import android.content.Context;
+
+public class ComandoError implements Comando {
+
+    protected String identificador;
+
     public ComandoError(String id) {
-        super(id);
+        identificador = id;
     }
 
     @Override
-    public String ejecutar() {
+    public String ejecutar(Context contexto) {
         return identificador;
     }
 
