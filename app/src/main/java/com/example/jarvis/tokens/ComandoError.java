@@ -1,7 +1,5 @@
 package com.example.jarvis.tokens;
 
-import java.util.List;
-
 public class ComandoError extends Comando {
     public ComandoError(String id) {
         super(id);
@@ -9,15 +7,10 @@ public class ComandoError extends Comando {
 
     @Override
     public String ejecutar() {
-        return "";
+        return identificador;
     }
 
     @Override
-    public List<Argumento> analizarArgumentos(String[] args) {
-        return null;
-    }
-
-    public String toString() {
-        return identificador;
+    public void analizarArgumentos(String[] args) {
     }
 }

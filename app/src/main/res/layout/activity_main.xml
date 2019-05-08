@@ -16,16 +16,6 @@
             android:contentDescription="@string/boton_para_iniciar_la_captura_de_voz"
             app:layout_constraintHorizontal_bias="0.498" app:srcCompat="@drawable/mic"/>
     <ImageView
-            android:id="@+id/btnClima"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:visibility="visible"
-            android:onClick="talk" app:srcCompat="@drawable/weather"
-            android:contentDescription="@string/reporte_completo_del_clima" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="parent"/>
-    <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/btnEventos"

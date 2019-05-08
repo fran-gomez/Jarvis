@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         miAnalizador = new AnalizadorFuerzaBruta();
 
         // Saludar al usuario
-        talk("Buen dia señor, en que puedo ayudarlo?");
     }
 
     public void talk(View view) {
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> res;
         Comando comando;
+        String str;
 
         if (requestCode == 10)
             if (resultCode == RESULT_OK && data != null) {
@@ -83,10 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 // Analizamos la cadena de entrada del usuario en busca del comando y sus argumentos
                 comando = miAnalizador.analize(res.get(0));
 
-                talk(comando.toString());
 
-                /*if (comando.ejecutar() == null)
-                    talk("Comando aun no implementado");*/
+                if ((str = comando.ejecutar()) == null)
+                    talk("Comando aun no implementado");
+                else
+                    talk(str);
             }
     }
 

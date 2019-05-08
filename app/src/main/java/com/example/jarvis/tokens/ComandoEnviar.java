@@ -1,7 +1,5 @@
 package com.example.jarvis.tokens;
 
-import java.util.List;
-
 public class ComandoEnviar extends Comando {
 
     public ComandoEnviar(String id) {
@@ -10,11 +8,10 @@ public class ComandoEnviar extends Comando {
 
     @Override
     public String ejecutar() {
-        return null;
+        return identificador;
     }
 
     @Override
-    public List<Argumento> analizarArgumentos(String[] args) {
-        return null;
+    public void analizarArgumentos(String[] args) {
     }
 }
