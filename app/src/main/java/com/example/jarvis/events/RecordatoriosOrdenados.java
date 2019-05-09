@@ -1,5 +1,6 @@
 package com.example.jarvis.events;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.PriorityQueue;
@@ -8,42 +9,69 @@ import java.util.Queue;
 public class RecordatoriosOrdenados extends Reminder {
 
     protected Queue<Evento> misEventos;
+    protected File eventosDeUsuario;
+    protected boolean ejecutar;
 
-    private RecordatoriosOrdenados() {
+    public RecordatoriosOrdenados() {
+        super("RecordatoriosOrdenados");
         misEventos = new PriorityQueue<>(new ComparadorEvento<>());
+        eventosDeUsuario = new File("misEventos.txt");
+
+        // Levanto el archivo que contiene todos los eventos
+
+
+        // Rearmo la cola de eventos
     }
 
-    public Evento obtenerProximoEvento() {
-        assert (misEventos.size() > 0);
-
-        return misEventos.peek();
-    }
-
-    public void eventoCompletado(Evento e) {
-        misEventos.remove(e);
-    }
-
+    @Override
     public Evento agregarEvento(String descripcion, Date fecha) {
 
         Evento nuevo = new Evento(descripcion, fecha);
-        if (misEventos.add(nuevo))
-            return nuevo;
-        else
-            return null;
+        if (nuevo != null) {
+            // Meto el evento en el archivo
+        }
+
+        return nuevo;
     }
 
-    public Evento editarEvento(CharSequence nuevaDescr) {
+    @Override
+    public Iterator<Evento> obtenerEventos() {
         return null;
     }
 
-    public Iterator<Evento> obtenerEventos() {
-        return misEventos.iterator();
-    }
+    public void run() {
 
-    public static Reminder getInstancia() {
-        if (instancia == null)
-            instancia = new RecordatoriosOrdenados();
+        Evento masCercano;
+        Date ahora;
 
-        return instancia;
+        ejecutar = true;
+        while (ejecutar) {
+            masCercano = misEventos.peek();
+
+            if (masCercano == null) {
+                try {
+                    sleep(300000); // 5 minutos de espera
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                continue;
+            }
+
+            ahora = new Date();
+            long segundosRestantes = (masCercano.getFecha().getTime() - ahora.getTime()) / 1000;
+            if (segundosRestantes >= 0 && segundosRestantes < 3600)
+                // Mando una notificacion con el evento
+                System.out.println("En la proxima hora hay un evento");
+            else if (segundosRestantes < 0)
+                // El evento ya paso, lo saco de la cola
+                misEventos.poll();
+
+            // Duermo el thread por la mitad del tiempo que resta hasta el proximo evento
+            try {
+                sleep(segundosRestantes * 500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.jarvis.events.Evento;
-import com.example.jarvis.events.RecordatoriosOrdenados;
 import com.example.jarvis.events.Reminder;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class VisorDeEventos extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        misRecordatorios = RecordatoriosOrdenados.getInstancia();
+//        misRecordatorios = RecordatoriosOrdenados.getInstancia();
 
         List<Evento> eventos = new ArrayList<>();
         Iterator<Evento> it;

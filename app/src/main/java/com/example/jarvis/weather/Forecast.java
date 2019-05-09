@@ -16,10 +16,11 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
 
     protected String url;
     protected String reporte;
+    protected String idCiudad;
 
     public Forecast() {
         url = "http://api.openweathermap.org/data/2.5/weather?";
-        reporte = "";
+        reporte = "Datos aun no disponibles, por favor, intente mas tarde";
     }
 
     /**
@@ -36,6 +37,11 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
      */
     public String getReporte() {
         return reporte;
+    }
+
+
+    public void setIdCiudad(String idCiudad) {
+        this.idCiudad = idCiudad;
     }
 
     /**

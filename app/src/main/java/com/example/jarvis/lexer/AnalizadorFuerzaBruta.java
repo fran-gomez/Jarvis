@@ -1,6 +1,6 @@
 package com.example.jarvis.lexer;
 
-import com.example.jarvis.tokens.*;
+import com.example.jarvis.comands.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,11 @@ public class AnalizadorFuerzaBruta extends Tokenizer {
         if (comando == null)
             comando = new ComandoError("Lo lamento señor, no encuentro el comando que me esta pidiendo");
         else
-            comando.analizarArgumentos(palabras);
+            try {
+                comando.analizarArgumentos(palabras);
+            } catch (InvalidFormatException e) {
+                comando = new ComandoError(e.getMessage());
+            }
 
         return comando;
     }

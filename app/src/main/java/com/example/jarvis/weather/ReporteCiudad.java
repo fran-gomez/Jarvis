@@ -12,12 +12,13 @@ public class ReporteCiudad extends Forecast {
 
         ciudades = armarMapeo();
 
-        String idCiudad = ciudades.get(ciudad.toLowerCase());
+        idCiudad = ciudades.get(ciudad.toLowerCase());
         if (idCiudad != null)
             url = url + "id="+idCiudad + apiKey + "&units=metric";
         else
             url = "";
     }
+
 
     private Map<String, String> armarMapeo() {
 

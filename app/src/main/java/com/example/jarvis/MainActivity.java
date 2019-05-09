@@ -8,11 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
-import com.example.jarvis.events.RecordatoriosOrdenados;
-import com.example.jarvis.events.Reminder;
+import com.example.jarvis.comands.Comando;
 import com.example.jarvis.lexer.AnalizadorFuerzaBruta;
 import com.example.jarvis.lexer.Tokenizer;
-import com.example.jarvis.tokens.Comando;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -21,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TextToSpeech voice;
 
-    private Reminder misEventos;
     private Tokenizer miAnalizador;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +34,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Inicializar los objetos correspondientes a Jarvis
-        misEventos = RecordatoriosOrdenados.getInstancia();
         miAnalizador = new AnalizadorFuerzaBruta();
-
-        // Saludar al usuario
     }
 
     public void mostrarEventos(View view) {
 
-        Intent visorDeEventos = new Intent(this, VisorDeEventos.class);
-        startActivity(visorDeEventos);
     }
 
     public void talk(String words) {
@@ -54,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         if (words.length() == 0) {
             voice.speak("Lo siento, no tengo nada para decir", TextToSpeech.QUEUE_FLUSH, null, null);
         } else
-            voice.speak(words, TextToSpeech.QUEUE_ADD, null, null);
+            voice.speak(words, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
     public void listen(View view) {
@@ -91,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 else
                     talk(str);
             }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        talk("Bienvenido de vuelta señor");
     }
 
     protected void onDestroy() {

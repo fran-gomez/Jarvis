@@ -17,7 +17,7 @@ public class Evento {
     }
 
     public String toString() {
-        return descripcion + "\n" +
+        return descripcion + " " +
                 fecha.toString();
     }
 }

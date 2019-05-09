@@ -1,6 +1,6 @@
 package com.example.jarvis.lexer;
 
-import com.example.jarvis.tokens.Comando;
+import com.example.jarvis.comands.Comando;
 
 public abstract class Tokenizer {
 
