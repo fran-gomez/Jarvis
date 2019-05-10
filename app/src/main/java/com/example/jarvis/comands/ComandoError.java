@@ -1,18 +1,16 @@
 package com.example.jarvis.comands;
 
-import android.content.Context;
-
 public class ComandoError implements Comando {
 
-    protected String identificador;
+    protected String errorMsg;
 
     public ComandoError(String id) {
-        identificador = id;
+        errorMsg = id;
     }
 
     @Override
-    public String ejecutar(Context contexto) {
-        return identificador;
+    public String ejecutar() {
+        return errorMsg;
     }
 
     @Override

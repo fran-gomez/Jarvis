@@ -21,7 +21,6 @@ public class RecordatoriosOrdenados extends Reminder {
 
         // Levanto el archivo que contiene todos los eventos
 
-
         // Rearmo la cola de eventos
 
     }
@@ -44,31 +43,28 @@ public class RecordatoriosOrdenados extends Reminder {
     }
 
     public void run() {
-
         Evento masCercano;
-        Date ahora;
 
-        ejecutar = true;
-        while (ejecutar) {
+        while (true) {
             masCercano = misEventos.peek();
 
             if (masCercano == null) {
                 try {
-                    sleep(300000); // 5 minutos de espera
+                    sleep(60000); // 1 minutos de espera
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 continue;
             }
 
-            ahora = new Date();
-            long segundosRestantes = (masCercano.getFecha().getTime() - ahora.getTime()) / 1000;
+            long segundosRestantes = (masCercano.getFecha().getTime() - System.currentTimeMillis()) / 1000;
             if (segundosRestantes >= 0 && segundosRestantes < 3600)
                 // Mando una notificacion con el evento
-                System.out.println("En la proxima hora hay un evento");
+                System.out.println("En la proxima hora hay un evento***************");
             else if (segundosRestantes < 0) {
                 // El evento ya paso, lo saco de la cola
                 misEventos.poll();
+                segundosRestantes = 60; // Espero un minuto hasta pedir el proximo evento
             }
 
             // Duermo el thread por la mitad del tiempo que resta hasta el proximo evento

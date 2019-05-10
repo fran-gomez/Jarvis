@@ -1,18 +1,17 @@
 package com.example.jarvis.comands;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 
-public class ComandoReproducir implements Comando {
+public class ComandoReproducir extends ContextWrapper implements Comando {
 
-    protected String identificador;
-
-    public ComandoReproducir(String id) {
-        identificador = id;
+    public ComandoReproducir(Context contexto) {
+        super(contexto);
     }
 
     @Override
-    public String ejecutar(Context contexto) {
-        return identificador;
+    public String ejecutar() {
+        return "reproducir";
     }
 
     @Override

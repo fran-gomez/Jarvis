@@ -1,59 +1,84 @@
 package com.example.jarvis.comands;
 
-import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
-import android.telecom.Call;
+import android.provider.ContactsContract;
 
-public class ComandoLlamar extends Activity implements Comando {
+public class ComandoLlamar extends ContextWrapper implements Comando {
 
-    protected String identificador;
     protected String nombreContacto;
     protected String numeroContacto;
 
-    public ComandoLlamar(String id) {
-        numeroContacto = "5492914311274";
-        identificador = id;
+    public ComandoLlamar(Context contexto) {
+        super(contexto);
+        nombreContacto = "";
+        numeroContacto = "";
     }
 
-    public String ejecutar(Context contexto) {
+    public String ejecutar() {
 
         Intent llamada = new Intent(Intent.ACTION_CALL);
-        llamada.setData(Uri.parse(numeroContacto));
-        llamada.setPackage("com.android.call");
-        llamada.setClass(contexto, Call.class);
-        contexto.startActivity(llamada);
+        llamada.setData(Uri.parse("tel:" + numeroContacto));
+        llamada.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        nombreContacto = numeroContacto = "";
+        startActivity(llamada);
 
-        return "Llamada finalizada";
+        return "Llamando";
     }
 
 
+    // TODO Ver por que no me toma los nombres de contacto compuestos
     public void analizarArgumentos(String[] args) throws InvalidFormatException {
+        assert (nombreContacto.equals(""));
+        assert (numeroContacto.equals(""));
         assert (args.length >= 3);
 
         // Comando de la forma llamar a <contacto>
         if (!args[1].equals("a"))
             throw new InvalidFormatException("Esperaba un contacto y recibi cualquier cosa");
 
-        if (esCelValido(args[2]))
-            numeroContacto = args[2];
-        else {
-            nombreContacto = args[2];
-            // Buscar contacto en la agenda del telefono
+        // Armo el nombre del contacto
+        for (int i = 2; i < args.length-1; i++)
+            nombreContacto += args[i] + " ";
+        nombreContacto += args[args.length-1];
+
+        // Busco el numero del contacto en la agenda del celu
+        numeroContacto = buscarContacto(nombreContacto);
+        if (numeroContacto.equals("")) {
+            nombreContacto = "";
+            throw new InvalidFormatException("Contacto no encontrado");
         }
     }
 
-    private boolean esCelValido(String numCel) {
+    private String buscarContacto(String nombreContacto) {
+        // Buscar el contacto por nombre
+        ContentResolver cr = getContentResolver();
+        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
+                "DISPLAY_NAME = '" + nombreContacto + "'", null, null);
 
-        int i = 0;
+        if (cursor.moveToFirst()) {
+            String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
 
-        while (i < numCel.length())
-            if (numCel.charAt(i) <= '0' || numCel.charAt(i) >= '9')
-                return false;
-            else
-                i++;
+            // Obtener todos los numeros de telefono
+            Cursor numeros = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
+            while (numeros.moveToNext()) {
+                String numero = numeros.getString(numeros.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                int type = numeros.getInt(numeros.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+                if (type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
+                    cursor.close();
+                    numeros.close();
+                    return numero;
+                }
+            }
+            numeros.close();
+        }
+        cursor.close();
 
-        return true;
+        return "";
     }
 }

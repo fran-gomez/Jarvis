@@ -1,5 +1,6 @@
 package com.example.jarvis.lexer;
 
+import android.content.Context;
 import com.example.jarvis.comands.*;
 
 import java.util.HashMap;
@@ -9,16 +10,16 @@ public class AnalizadorFuerzaBruta extends Tokenizer {
 
     protected Map<String, Comando> misObjetos;
 
-    public AnalizadorFuerzaBruta() {
+    public AnalizadorFuerzaBruta(Context contexto) {
         misObjetos = new HashMap<>();
 
         // Agregamos un token por cada comando registrado
-        misObjetos.put("recu\u00e9rdame", new ComandoRecordatorio("recu\u00e9rdame"));
-        misObjetos.put("despi\u00e9rtame", new ComandoAlarma("despi\u00e9rtame"));
-        misObjetos.put("llamar", new ComandoLlamar("llamar"));
-        misObjetos.put("enviar", new ComandoEnviar("enviar"));
-        misObjetos.put("reproducir", new ComandoReproducir("reproducir"));
-        misObjetos.put("reportame", new ComandoReportar("reportame"));
+        misObjetos.put("recu\u00e9rdame", new ComandoRecordatorio(contexto));
+        misObjetos.put("despi\u00e9rtame", new ComandoAlarma(contexto));
+        misObjetos.put("llamar", new ComandoLlamar(contexto));
+        misObjetos.put("enviar", new ComandoEnviar(contexto));
+        misObjetos.put("reproducir", new ComandoReproducir(contexto));
+        misObjetos.put("reportame", new ComandoReportar());
     }
 
     public Comando analize(String spokenInput) {

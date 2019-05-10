@@ -1,6 +1,5 @@
 package com.example.jarvis.weather;
 
-import android.os.AsyncTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,7 +9,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public abstract class Forecast extends AsyncTask<String, Void, String> {
+public abstract class Forecast extends Thread {
 
     protected final String apiKey = "&APPID=e8db9e21c8c3494bda08cdc02e4f99f3";
 
@@ -18,9 +17,12 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
     protected String reporte;
     protected String idCiudad;
 
+    protected long ultimoPedido;
+
     public Forecast() {
         url = "http://api.openweathermap.org/data/2.5/weather?";
         reporte = "Datos aun no disponibles, por favor, intente mas tarde";
+        ultimoPedido = 0;
     }
 
     /**
@@ -51,39 +53,46 @@ public abstract class Forecast extends AsyncTask<String, Void, String> {
      * @param url Direccion correspondiente a la ciudad
      * @return JSON que contiene todos los datos referentes al clima actual en la ciudad
      */
-    protected String doInBackground(String... url) {
-        assert (url.length == 1);
+    public void run() {
 
-        try {
-            URL direccionApi = new URL(url[0]);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(direccionApi.openStream()));
 
-            String line, reporte = "";
-            while ((line = rd.readLine()) != null)
-                reporte += line;
+        while (true) {
+            long pedidoActual = System.currentTimeMillis();
 
-            rd.close();
-
-            return reporte;
-        } catch (MalformedURLException e) {
-            return "Direccion U R L mal formada. Por favor, contacte al administrador";
-        } catch (IOException e) {
-            return "Error de lectura escritura, por favor, intente nuevamente.";
+            if ((pedidoActual - ultimoPedido) / 1000 >= 3600) {
+                reporte = obtenerReporte(url);
+                ultimoPedido = pedidoActual;
+            } else
+                try {
+                    sleep(pedidoActual - ultimoPedido / 2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
-    /**
-     * Procesamiento de los resultados obtenidos por el metodo doInBackground
-     * @param aString JSON que contiene los datos referentes al clima actual en la ciudad
-     */
-    protected void onPostExecute(String aString) {
-        super.onPostExecute(aString);
+    private String obtenerReporte(String url) {
+        try {
+            URL direccionApi = new URL(url);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(direccionApi.openStream()));
 
-        if (aString.length() > 0)
-            reporte = armarReporte(aString);
-        else
-            reporte = "Error obteniendo el reporte";
+            String line, webData = "";
+            while ((line = rd.readLine()) != null)
+                webData += line;
+
+            rd.close();
+
+            if (webData.length() > 0)
+                return armarReporte(webData);
+            else
+                return  "Error al obtener el reporte en linea";
+        } catch (MalformedURLException e) {
+            return  "Direccion U R L mal formada. Por favor, contacte al administrador";
+        } catch (IOException e) {
+            return  "Error de lectura escritura en la web";
+        }
     }
+
 
     /**
      * Analiza el objeto JSON para armar el reporte del clima

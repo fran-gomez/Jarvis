@@ -1,6 +1,7 @@
 package com.example.jarvis.comands;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import com.example.jarvis.events.Evento;
 import com.example.jarvis.events.RecordatoriosOrdenados;
 import com.example.jarvis.events.Reminder;
@@ -11,18 +12,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ComandoRecordatorio implements Comando {
+public class ComandoRecordatorio extends ContextWrapper implements Comando {
 
     private Map<String, String> meses;
 
     protected Reminder misRecordatorios;
 
-    protected String identificador;
     protected String descripcion;
     protected Date fecha;
 
-    public ComandoRecordatorio(String id) {
-        identificador = id;
+    public ComandoRecordatorio(Context contexto) {
+        super(contexto);
         descripcion = "";
         fecha = null;
 
@@ -33,7 +33,7 @@ public class ComandoRecordatorio implements Comando {
     }
 
 
-    public String ejecutar(Context contexto) {
+    public String ejecutar() {
 
         Evento nuevo = misRecordatorios.agregarEvento(descripcion, fecha);
 

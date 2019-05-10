@@ -9,6 +9,7 @@ public class Evento {
 
     public Evento(String descripcion, Date fecha) {
         this.descripcion = descripcion;
+        fecha.setYear(119); // Cantidad de años que pasaron desde 1900
         this.fecha = fecha;
     }
 

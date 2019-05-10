@@ -1,29 +1,22 @@
 package com.example.jarvis.comands;
 
-import android.content.Context;
 import com.example.jarvis.weather.Forecast;
 import com.example.jarvis.weather.ReporteCiudad;
 
 public class ComandoReportar implements Comando {
 
-    protected String identificador;
-
     protected Forecast reporte;
     protected String ciudad;
 
-    private long ultimaSolicitud;
 
-    public ComandoReportar(String id) {
-        identificador = id;
-
+    public ComandoReportar() {
         ciudad = "Bahia Blanca";
         reporte = new ReporteCiudad(ciudad);
-        ultimaSolicitud = 0;
 
-        //ejecutar(null);
+        reporte.start();
     }
 
-    public String ejecutar(Context contexto) {
+    public String ejecutar() {
 
         return reporte.getReporte();
     }
@@ -42,12 +35,5 @@ public class ComandoReportar implements Comando {
 
         if (!args[1].equals("el") && !args[2].equals("clima"))
             throw new InvalidFormatException("Formato de orden invalido");
-
-        long nuevaSolicitud = System.currentTimeMillis();
-        // Pido el reporte al servidor una vez cada 60 minutos como maximo
-        if ((nuevaSolicitud - ultimaSolicitud) / 1000 > 3600) {
-            reporte.execute(reporte.getUrl());
-            ultimaSolicitud = nuevaSolicitud;
-        }
     }
 }

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Inicializar los objetos correspondientes a Jarvis
-        miAnalizador = new AnalizadorFuerzaBruta();
+        miAnalizador = new AnalizadorFuerzaBruta(getApplicationContext());
     }
 
     public void mostrarEventos(View view) {
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 comando = miAnalizador.analize(res.get(0));
 
 
-                if ((str = comando.ejecutar(this)) == null)
+                if ((str = comando.ejecutar()) == null)
                     talk("Comando aun no implementado");
                 else
                     talk(str);
