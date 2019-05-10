@@ -28,7 +28,7 @@ public class ComandoRecordatorio implements Comando {
 
         meses = mapeoMeses();
 
-        misRecordatorios = new RecordatoriosOrdenados();
+        misRecordatorios = RecordatoriosOrdenados.getInstancia();
         misRecordatorios.start();
     }
 
@@ -39,8 +39,10 @@ public class ComandoRecordatorio implements Comando {
 
         if (nuevo == null)
             return "Error agregando el recordatorio";
-        else
+        else {
+            descripcion = "";
             return "Recordatorio agendado";
+        }
 
     }
 

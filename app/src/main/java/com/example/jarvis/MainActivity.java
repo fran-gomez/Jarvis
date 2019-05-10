@@ -9,10 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 import com.example.jarvis.comands.Comando;
+import com.example.jarvis.events.Evento;
+import com.example.jarvis.events.RecordatoriosOrdenados;
+import com.example.jarvis.events.Reminder;
 import com.example.jarvis.lexer.AnalizadorFuerzaBruta;
 import com.example.jarvis.lexer.Tokenizer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mostrarEventos(View view) {
+        talk("Todos los eventos son");
+        Reminder misRecordatorios = RecordatoriosOrdenados.getInstancia();
+        Iterator<Evento> it = misRecordatorios.obtenerEventos();
 
+        while(it.hasNext())
+            System.out.println(it.next().toString());
     }
 
     public void talk(String words) {

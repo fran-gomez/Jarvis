@@ -8,11 +8,13 @@ import java.util.Queue;
 
 public class RecordatoriosOrdenados extends Reminder {
 
+    private static Reminder instancia;
+
     protected Queue<Evento> misEventos;
     protected File eventosDeUsuario;
     protected boolean ejecutar;
 
-    public RecordatoriosOrdenados() {
+    private RecordatoriosOrdenados() {
         super("RecordatoriosOrdenados");
         misEventos = new PriorityQueue<>(new ComparadorEvento<>());
         eventosDeUsuario = new File("misEventos.txt");
@@ -21,6 +23,7 @@ public class RecordatoriosOrdenados extends Reminder {
 
 
         // Rearmo la cola de eventos
+
     }
 
     @Override
@@ -30,13 +33,14 @@ public class RecordatoriosOrdenados extends Reminder {
         if (nuevo != null) {
             // Meto el evento en el archivo
         }
+        misEventos.add(nuevo);
 
         return nuevo;
     }
 
     @Override
     public Iterator<Evento> obtenerEventos() {
-        return null;
+        return misEventos.iterator();
     }
 
     public void run() {
@@ -62,9 +66,10 @@ public class RecordatoriosOrdenados extends Reminder {
             if (segundosRestantes >= 0 && segundosRestantes < 3600)
                 // Mando una notificacion con el evento
                 System.out.println("En la proxima hora hay un evento");
-            else if (segundosRestantes < 0)
+            else if (segundosRestantes < 0) {
                 // El evento ya paso, lo saco de la cola
                 misEventos.poll();
+            }
 
             // Duermo el thread por la mitad del tiempo que resta hasta el proximo evento
             try {
@@ -73,5 +78,12 @@ public class RecordatoriosOrdenados extends Reminder {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static Reminder getInstancia() {
+        if (instancia == null)
+            instancia = new RecordatoriosOrdenados();
+
+        return instancia;
     }
 }
